@@ -21,6 +21,7 @@ class NTPClient {
     unsigned long _updateInterval = 60000;  // In ms
 
     unsigned long _currentEpoc    = 0;      // In s
+    uint64_t      _currentEpocMS  = 0;
     unsigned long _lastUpdate     = 0;      // In ms
 
     byte          _packetBuffer[NTP_PACKET_SIZE];
@@ -106,6 +107,11 @@ class NTPClient {
      * @return time in seconds since Jan. 1, 1970
      */
     unsigned long getEpochTime() const;
+    
+    /**
+     * @return time in milliseconds since Jan. 1, 1970
+     */
+    uint64_t getEpochTimeMsUTC() const;
 
     /**
      * Stops the underlying UDP client

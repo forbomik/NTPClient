@@ -113,6 +113,7 @@ bool NTPClient::forceUpdate() {
   unsigned long secsSince1900 = highWord << 16 | lowWord;
 
   this->_currentEpoc = secsSince1900 - SEVENZYYEARS;
+  this->_currentEpocMS = (((uint64_t) this->_currentEpoc)*1000);
 
   return true;  // return true after successful update
 }
@@ -135,6 +136,35 @@ unsigned long NTPClient::getEpochTime() const {
          this->_currentEpoc + // Epoch returned by the NTP server
          ((millis() - this->_lastUpdate) / 1000); // Time since last update
 }
+
+uint64_t NTPClient::getEpochTimeMsUTC() const {
+  //uint64_t result;//, mymillis, temp1, temp2;
+  //mymillis = millis();
+  //temp1 = this->_currentEpoc;
+  //temp1 = temp1*1000;
+  //temp2 = mymillis - this->_lastUpdate;
+  return  this->_currentEpocMS+millis()-this->_lastUpdate;
+  /*
+  Serial.print("Sizeof: \"");
+  Serial.print(sizeof(result));
+  Serial.print("\" CEpoch: \"");
+  Serial.print(this->_currentEpoc);
+  Serial.print("\" lastupdate: \"");
+  Serial.print(this->_lastUpdate);
+  Serial.print("\" millis: \"");
+  Serial.print(mymillis);
+  Serial.print("\" CepochMS: \"");
+  Serial.print(temp1);
+  Serial.print("\" add to epoch: \"");
+  Serial.print(temp2);
+  Serial.print("\" result: \"");
+  Serial.print(result);
+  Serial.println("\"");
+   
+  return result; 
+  */
+}
+
 
 int NTPClient::getDay() const {
   return (((this->getEpochTime()  / 86400L) + 4 ) % 7); //0 is Sunday
